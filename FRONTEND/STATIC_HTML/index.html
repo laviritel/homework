@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang ="en">
+<head>
+	<title>Dog image browser</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+</head>
+
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+      		<a class="navbar-brand" href="#">Dog Browser</a>
+    		</div>
+		</div>
+	</nav>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-3">
+				<ul class="list-group" id="breed-list">
+				</ul>
+			</div>
+			<div class="col-md-6" id="img-container" style="background-color:red; ">
+
+			</div>
+		</div>
+	</div>
+</body>
+
+<script
+  src="http://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$.ajax({
+		dataType:"json",
+		url: "https://dog.ceo/api/breeds/list/all",
+	})
+	.done(function(data){
+		var breedList = $('#breed-list');
+		if(data.status=="success")
+		{
+			$.each(data.message,function(i,item){
+				var li =$("<li></li>")
+						.addClass("list-group-item")
+						.attr("data-breed",i)
+						.appendTo(breedList);
+
+				$("<a href='#'></a>")
+					.data("breed",3)
+					.addClass('load-image')
+					.text(i)
+					.appendTo(li);
+			});
+		}
+	});
+
+	$("#breed-list").on('click','.list-group-item',function(event){
+		var elem = $( this );
+		var breed=elem.data("breed");
+		$.ajax({
+			dataType:"json",
+			url:"https://dog.ceo/api/breed/"+breed+"/images/random"
+		})
+		.done(function(data){
+			$("#img-container").empty();
+			$("<img>")
+			.attr("src",data.message)
+			.appendTo("#img-container")
+			.css("top",$(document).scrollTop())
+			.css("position","absolute");
+		});
+        
+	})
+});
+</script>
+</html>
