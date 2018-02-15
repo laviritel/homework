@@ -17,7 +17,7 @@ namespace Legacy.Web.Templates.Pages
         public string Email { get; set; }
 
         #region ContactPerson list initialization
-        public static List<ContactPerson> PopulateContactPersonList(List<ContactPerson> contactPersonList)
+        internal static List<ContactPerson> PopulateContactPersonList(List<ContactPerson> contactPersonList)
         {
             contactPersonList = new List<ContactPerson>();
             contactPersonList.Add(new ContactPerson("Sørfold", "Nordland", "Kjell.Stokbakken@Legacy.com"));
